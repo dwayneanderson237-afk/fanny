@@ -1,0 +1,89 @@
+{
+  "orders": [
+    {
+      "id": "FNY-5627",
+      "customer": "New Customer",
+      "items": [
+        {
+          "name": "Chin Chin",
+          "qty": 1
+        }
+      ],
+      "pickup": "12:00 PM",
+      "status": "prep",
+      "date": "2026-02-15",
+      "total": 0
+    },
+    {
+      "id": "FNY-1024",
+      "customer": "Mia Thompson",
+      "items": [
+        {
+          "name": "Chin Chin",
+          "qty": 2
+        },
+        {
+          "name": "Fish Roll",
+          "qty": 1
+        }
+      ],
+      "pickup": "10:30 AM",
+      "status": "delivered",
+      "date": "2026-02-15",
+      "total": 140
+    },
+    {
+      "id": "FNY-1025",
+      "customer": "Jordan Park",
+      "items": [
+        {
+          "name": "Egg Roll",
+          "qty": 2
+        },
+        {
+          "name": "Akara Beans",
+          "qty": 1
+        }
+      ],
+      "pickup": "11:15 AM",
+      "status": "prep",
+      "date": "2026-02-15",
+      "total": 180
+    },
+    {
+      "id": "FNY-1026",
+      "customer": "Lila Knox",
+      "items": [
+        {
+          "name": "Meat Pie",
+          "qty": 2
+        },
+        {
+          "name": "Puff Puff Balls",
+          "qty": 1
+        }
+      ],
+      "pickup": "12:05 PM",
+      "status": "delivered",
+      "date": "2026-02-15",
+      "total": 210
+    }
+  ],
+  "inventory": [
+    {
+      "item": "Beans",
+      "level": "Low",
+      "note": "Restock in 2 days"
+    },
+    {
+      "item": "Fish filling",
+      "level": "Low",
+      "note": "Order by Monday"
+    },
+    {
+      "item": "Eggs",
+      "level": "Medium",
+      "note": "Prep extra trays"
+    }
+  ]
+}

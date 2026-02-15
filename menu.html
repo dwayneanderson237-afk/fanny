@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Browse chin chin, akara beans, egg rolls, fish rolls, puff puff, doughnut balls, and meat pies." />
+  <meta property="og:title" content="Fanny's Bites | Menu" />
+  <meta property="og:description" content="Browse chin chin, akara beans, egg rolls, fish rolls, puff puff, doughnut balls, and meat pies." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1600&q=80" />
+  <meta property="og:url" content="https://fannysbites.com/menu.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://images.unsplash.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Quicksand:wght@400;500;600;700&display=swap" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <title>Fanny's Bites | Menu</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <!-- Sticky navigation -->
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="logo" data-site-name href="index.html">Fanny's Bites</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav">
+        <span class="nav-toggle-line"></span>
+        <span class="sr-only">Toggle navigation</span>
+      </button>
+      <nav id="primary-nav" class="primary-nav" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="menu.html">Menu</a>
+        <a href="about.html">About</a>
+        <a href="index.html#contact">Contact</a>
+        <a class="cta-link" href="cart.html">View Cart <span class="cart-count" aria-live="polite">0</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Menu hero -->
+    <section class="section">
+      <div class="container center">
+        <p class="eyebrow reveal">Our Snack Menu</p>
+        <h1 class="page-title reveal" data-menu-title>Fresh, savory, and ready to savor</h1>
+        <p class="subtle reveal" data-menu-subtitle>Tap any item to see a bigger photo and details.</p>
+      </div>
+
+      <!-- Floating icons around the menu header -->
+      <span class="float-icon icon-cupcake" style="--x: 86%; --y: 16%;" data-speed="0.22">
+        <img loading="lazy" decoding="async" src="https://openmoji.org/data/color/svg/1F9C1.svg" alt="" aria-hidden="true" />
+      </span>
+    </section>
+
+    <!-- Signature snacks -->
+    <section class="section">
+      <div class="container">
+        <header class="section-header reveal">
+          <h2>Signature Snacks</h2>
+          <p>Crunchy, flaky, and freshly made every morning.</p>
+        </header>
+        <div class="menu-grid" data-menu-products></div>
+
+        <span class="float-icon float-fall" style="--x: 88%; --y: 18%;" data-speed="0.18">
+          <img loading="lazy" decoding="async" src="https://openmoji.org/data/color/svg/1F967.svg" alt="" aria-hidden="true" />
+        </span>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="badge">Combo Trays</span>
+          <h2>Bundles for every crowd</h2>
+          <p>Choose a curated combo for quick ordering.</p>
+        </header>
+        <div class="combo-grid" data-combos></div>
+        <span class="float-icon small" style="--x: 8%; --y: 64%;" data-speed="0.12">
+          <img loading="lazy" decoding="async" src="https://openmoji.org/data/color/svg/1F9C7.svg" alt="" aria-hidden="true" />
+        </span>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal popup for menu items -->
+  <div class="modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-overlay" data-close="modal"></div>
+    <div class="modal-content" role="document">
+      <button class="modal-close" type="button" data-close="modal" aria-label="Close modal">✕</button>
+      <img loading="lazy" decoding="async" id="modal-image" src="" alt="" />
+      <div>
+        <h3 id="modal-title"></h3>
+        <p id="modal-price" class="price"></p>
+        <p id="modal-desc" class="subtle"></p>
+        <div class="modal-sizes" data-modal-sizes></div>
+        <button class="btn primary" type="button" data-modal-add>Add to Cart</button>
+        <a class="btn ghost" href="cart.html">View Cart</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer / Contact -->
+  <footer class="site-footer" id="contact">
+    <div class="container footer-grid">
+      <div>
+        <h3 data-site-name>Fanny's Bites</h3>
+        <p data-site-description>Chin chin, akara beans, fish rolls, and egg rolls made fresh every morning.</p>
+        <p><strong>Address:</strong> <span data-contact-address>145 Lemon Lane, Suite B, Sunnyvale</span></p>
+        <p><strong>Map:</strong> <span data-contact-map>maps.google.com/?q=145+Lemon+Lane+Sunnyvale</span></p>
+      </div>
+      <div>
+        <h3>Hours</h3>
+        <div data-contact-hours>
+          <p>Mon - Fri: 7:00 AM - 7:00 PM</p>
+          <p>Sat: 8:00 AM - 6:00 PM</p>
+          <p>Sun: 8:00 AM - 3:00 PM</p>
+        </div>
+      </div>
+      <div>
+        <h3>Connect</h3>
+        <div class="footer-links" data-social-links>
+          <a href="#">Instagram</a>
+          <a href="#">Facebook</a>
+          <a href="#">TikTok</a>
+        </div>
+        <p><strong>Phone:</strong> <span data-contact-phone>(123) 456-7890</span></p>
+        <a class="btn ghost" data-contact-whatsapp href="#">WhatsApp Us</a>
+      </div>
+      <div>
+        <h3>Say Hello</h3>
+        <form class="footer-form">
+          <label class="sr-only" for="contact-name">Name</label>
+          <input id="contact-name" type="text" placeholder="Your name" />
+          <label class="sr-only" for="contact-email">Email</label>
+          <input id="contact-email" type="email" placeholder="Email address" />
+          <label class="sr-only" for="contact-message">Message</label>
+          <textarea id="contact-message" placeholder="How can we help?"></textarea>
+          <button class="btn primary" type="submit">Send Message</button>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Join our newsletter for sweet updates and special offers.</p>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

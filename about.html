@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Meet Fanny's Bites, a neighborhood snack shop focused on chin chin, akara beans, egg rolls, fish rolls, puff puff, doughnut balls, and meat pies." />
+  <meta property="og:title" content="Fanny's Bites | About" />
+  <meta property="og:description" content="Meet Fanny's Bites, a neighborhood snack shop focused on chin chin, akara beans, egg rolls, fish rolls, puff puff, doughnut balls, and meat pies." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1481931098730-318b6f776db0?auto=format&fit=crop&w=1600&q=80" />
+  <meta property="og:url" content="https://fannysbites.com/about.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://images.unsplash.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Quicksand:wght@400;500;600;700&display=swap" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <title>Fanny's Bites | About</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <!-- Sticky navigation -->
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="logo" data-site-name href="index.html">Fanny's Bites</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav">
+        <span class="nav-toggle-line"></span>
+        <span class="sr-only">Toggle navigation</span>
+      </button>
+      <nav id="primary-nav" class="primary-nav" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="menu.html">Menu</a>
+        <a href="about.html">About</a>
+        <a href="index.html#contact">Contact</a>
+        <a class="cta-link" href="cart.html">View Cart <span class="cart-count" aria-live="polite">0</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- About section -->
+    <section class="section">
+      <div class="container about-grid">
+        <div class="about-card reveal">
+          <p class="eyebrow">About Us</p>
+          <h1 class="page-title" data-about-title>Made with love &amp; passion</h1>
+          <span class="float-icon small" style="--x: 78%; --y: 6%;" data-speed="0.12">
+            <img loading="lazy" decoding="async" src="https://openmoji.org/data/color/svg/1F353.svg" alt="" aria-hidden="true" />
+          </span>
+          <div data-about-paragraphs>
+            <p>Fanny's Bites is a neighborhood snack shop focused on warm hospitality, careful technique, and joyful flavors.</p>
+            <p>Our mission is simple: make chin chin, akara beans, egg rolls, fish rolls, and meat pies fresh each day, and make every visit feel like a treat.</p>
+            <p class="subtle">We use quality ingredients, bold spices, and a touch of sweetness to keep every bite balanced and bright.</p>
+          </div>
+          <a class="btn primary" href="menu.html">View Menu</a>
+        </div>
+        <div class="hero-image reveal">
+          <img src="https://images.unsplash.com/photo-1481931098730-318b6f776db0?auto=format&fit=crop&w=1200&q=80" alt="Bakery counter with fresh pastries" loading="eager" decoding="async" />
+        </div>
+
+        <!-- Decorative floating icons -->
+        <span class="float-icon float-fall" style="--x: 6%; --y: 5%;" data-speed="0.2">
+          <img loading="lazy" decoding="async" src="https://openmoji.org/data/color/svg/1F36F.svg" alt="" aria-hidden="true" />
+        </span>
+        <span class="float-icon" style="--x: 90%; --y: 18%;" data-speed="0.25">
+          <img loading="lazy" decoding="async" src="https://openmoji.org/data/color/svg/1F35E.svg" alt="" aria-hidden="true" />
+        </span>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer / Contact -->
+  <footer class="site-footer" id="contact">
+    <div class="container footer-grid">
+      <div>
+        <h3 data-site-name>Fanny's Bites</h3>
+        <p data-site-description>Chin chin, akara beans, fish rolls, and egg rolls made fresh every morning.</p>
+        <p><strong>Address:</strong> <span data-contact-address>145 Lemon Lane, Suite B, Sunnyvale</span></p>
+        <p><strong>Map:</strong> <span data-contact-map>maps.google.com/?q=145+Lemon+Lane+Sunnyvale</span></p>
+      </div>
+      <div>
+        <h3>Hours</h3>
+        <div data-contact-hours>
+          <p>Mon - Fri: 7:00 AM - 7:00 PM</p>
+          <p>Sat: 8:00 AM - 6:00 PM</p>
+          <p>Sun: 8:00 AM - 3:00 PM</p>
+        </div>
+      </div>
+      <div>
+        <h3>Connect</h3>
+        <div class="footer-links" data-social-links>
+          <a href="#">Instagram</a>
+          <a href="#">Facebook</a>
+          <a href="#">TikTok</a>
+        </div>
+        <p><strong>Phone:</strong> <span data-contact-phone>(123) 456-7890</span></p>
+        <a class="btn ghost" data-contact-whatsapp href="#">WhatsApp Us</a>
+      </div>
+      <div>
+        <h3>Say Hello</h3>
+        <form class="footer-form">
+          <label class="sr-only" for="contact-name">Name</label>
+          <input id="contact-name" type="text" placeholder="Your name" />
+          <label class="sr-only" for="contact-email">Email</label>
+          <input id="contact-email" type="email" placeholder="Email address" />
+          <label class="sr-only" for="contact-message">Message</label>
+          <textarea id="contact-message" placeholder="How can we help?"></textarea>
+          <button class="btn primary" type="submit">Send Message</button>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Join our newsletter for sweet updates and special offers.</p>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

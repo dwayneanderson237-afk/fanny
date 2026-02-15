@@ -1,0 +1,328 @@
+{
+  "site": {
+    "name": "Fanny's Bites",
+    "tagline": "Signature snacks made fresh.",
+    "description": "Signature Cameroon pastries made fresh daily."
+  },
+  "heroSlides": [
+    {
+      "title": "Signature snacks made fresh.",
+      "subtitle": "Crunchy, golden, and ready to share.",
+      "image": "/uploads/1771092206718-17136311.png"
+    },
+    {
+      "title": "Tray sizes for every celebration.",
+      "subtitle": "Small, medium, and large trays for any crowd.",
+      "image": "/uploads/1771093698307-466855490.png"
+    },
+    {
+      "title": "Order your favorites today.",
+      "subtitle": "Fish rolls, egg rolls, meat pies, and more.",
+      "image": "/uploads/1771092172871-57601966.png"
+    }
+  ],
+  "menu": {
+    "title": "Fresh, savory, and ready to savor",
+    "subtitle": "Tap any item to see a bigger photo and details."
+  },
+  "products": [
+    {
+      "id": "chin-chin",
+      "name": "Chin Chin",
+      "desc": "Crunchy bite-size dough, lightly spiced and fried to golden perfection.",
+      "image": "/uploads/1771093706148-146893184.png",
+      "featured": true,
+      "recommended": true,
+      "sizes": [
+        {
+          "size": "Small",
+          "price": 55,
+          "count": null
+        },
+        {
+          "size": "Medium",
+          "price": 90,
+          "count": null
+        },
+        {
+          "size": "Large",
+          "price": 110,
+          "count": null
+        }
+      ]
+    },
+    {
+      "id": "fish-roll",
+      "name": "Fish Roll",
+      "desc": "Flaky pastry roll filled with seasoned fish.",
+      "image": "/uploads/1771093769727-359400041.png",
+      "featured": true,
+      "recommended": true,
+      "sizes": [
+        {
+          "size": "Small",
+          "price": 60,
+          "count": 45
+        },
+        {
+          "size": "Medium",
+          "price": 100,
+          "count": 80
+        },
+        {
+          "size": "Large",
+          "price": 120,
+          "count": 90
+        }
+      ]
+    },
+    {
+      "id": "egg-roll",
+      "name": "Egg Roll",
+      "desc": "Soft, sweet dough wrapped around a seasoned egg center.",
+      "image": "/uploads/1771093782245-942745392.png",
+      "featured": true,
+      "recommended": true,
+      "sizes": [
+        {
+          "size": "Small",
+          "price": 80,
+          "count": 30
+        },
+        {
+          "size": "Medium",
+          "price": 120,
+          "count": 45
+        },
+        {
+          "size": "Large",
+          "price": 160,
+          "count": 60
+        }
+      ]
+    },
+    {
+      "id": "akara",
+      "name": "Akara Beans",
+      "desc": "Whipped bean fritters with a soft center and crisp edges.",
+      "image": "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?auto=format&fit=crop&w=1200&q=80",
+      "featured": true,
+      "recommended": true,
+      "sizes": [
+        {
+          "size": "Small",
+          "price": 80,
+          "count": null
+        },
+        {
+          "size": "Medium",
+          "price": 120,
+          "count": null
+        },
+        {
+          "size": "Large",
+          "price": 160,
+          "count": null
+        }
+      ]
+    },
+    {
+      "id": "puff-puff",
+      "name": "Puff Puff Balls",
+      "desc": "Soft, airy dough balls with a light golden crust.",
+      "image": "/uploads/1771092109317-14572036.png",
+      "featured": false,
+      "recommended": false,
+      "sizes": [
+        {
+          "size": "Small",
+          "price": 50,
+          "count": 50
+        },
+        {
+          "size": "Medium",
+          "price": 80,
+          "count": 80
+        },
+        {
+          "size": "Large",
+          "price": 100,
+          "count": 120
+        }
+      ]
+    },
+    {
+      "id": "doughnut",
+      "name": "Doughnut Balls",
+      "desc": "Pillowy doughnut bites finished with a light sugar dusting.",
+      "image": "https://images.unsplash.com/photo-1523986371872-9d3ba2e2f5f8?auto=format&fit=crop&w=1200&q=80",
+      "featured": false,
+      "recommended": false,
+      "sizes": [
+        {
+          "size": "Small",
+          "price": 45,
+          "count": null
+        },
+        {
+          "size": "Medium",
+          "price": 70,
+          "count": null
+        },
+        {
+          "size": "Large",
+          "price": 95,
+          "count": null
+        }
+      ]
+    },
+    {
+      "id": "meat-pie",
+      "name": "Meat Pie",
+      "desc": "Flaky pastry filled with savory minced meat and spices.",
+      "image": "/uploads/1771092119955-178740769.png",
+      "featured": false,
+      "recommended": false,
+      "sizes": [
+        {
+          "size": "Small",
+          "price": 90,
+          "count": 20
+        },
+        {
+          "size": "Medium",
+          "price": 130,
+          "count": 35
+        },
+        {
+          "size": "Large",
+          "price": 170,
+          "count": 50
+        }
+      ]
+    }
+  ],
+  "combos": [
+    {
+      "name": "Budget Duo",
+      "price": 58,
+      "items": [
+        "15 Fishrolls",
+        "15 Eggrolls"
+      ]
+    },
+    {
+      "name": "Classic Duo",
+      "price": 77,
+      "items": [
+        "20 Fishrolls",
+        "20 Eggrolls"
+      ]
+    },
+    {
+      "name": "Share Duo",
+      "price": 97,
+      "items": [
+        "25 Fishrolls",
+        "25 Eggrolls"
+      ]
+    },
+    {
+      "name": "Snack Trio",
+      "price": 92,
+      "items": [
+        "20 Fishrolls",
+        "20 Eggrolls",
+        "20 Doughnut Balls"
+      ]
+    },
+    {
+      "name": "Savory Trio",
+      "price": 117,
+      "items": [
+        "20 Fishrolls",
+        "20 Meat Pies",
+        "20 Eggrolls"
+      ]
+    },
+    {
+      "name": "Party Mix",
+      "price": 97,
+      "items": [
+        "50 Puff Puff Balls",
+        "20 Fishrolls",
+        "20 Meat Pies"
+      ]
+    }
+  ],
+  "promos": [
+    {
+      "title": "Tray Specials",
+      "description": "Save on medium + large trays every weekend."
+    },
+    {
+      "title": "Family Pack",
+      "description": "Mix any two trays and save $10."
+    },
+    {
+      "title": "Office Delivery",
+      "description": "Book bulk trays 48 hours ahead for office events."
+    }
+  ],
+  "testimonials": [
+    {
+      "quote": "The chin chin is perfectly crunchy. I stock up every week.",
+      "name": "Mia T."
+    },
+    {
+      "quote": "Fish rolls were flaky and flavorful. Big crowd favorite.",
+      "name": "Jordan P."
+    },
+    {
+      "quote": "Akara beans came out hot and fluffy. Loved the texture.",
+      "name": "Lila K."
+    }
+  ],
+  "about": {
+    "title": "Made with love & passion",
+    "paragraphs": [
+      "Fanny's Bites is a neighborhood snack shop focused on warm hospitality, careful technique, and joyful flavors.",
+      "Our mission is simple: make chin chin, akara beans, egg rolls, fish rolls, and meat pies fresh each day, and make every visit feel like a treat.",
+      "We use quality ingredients, bold spices, and a touch of sweetness to keep every bite balanced and bright."
+    ]
+  },
+  "contact": {
+    "address": "145 Lemon Lane, Suite B, Sunnyvale",
+    "phone": "(123) 456-7890",
+    "map": "maps.google.com/?q=145+Lemon+Lane+Sunnyvale",
+    "whatsapp": "#",
+    "hours": [
+      {
+        "label": "Mon - Fri",
+        "value": "7:00 AM - 7:00 PM"
+      },
+      {
+        "label": "Sat",
+        "value": "8:00 AM - 6:00 PM"
+      },
+      {
+        "label": "Sun",
+        "value": "8:00 AM - 3:00 PM"
+      }
+    ]
+  },
+  "socials": [
+    {
+      "label": "Instagram",
+      "href": "#"
+    },
+    {
+      "label": "Facebook",
+      "href": "#"
+    },
+    {
+      "label": "TikTok",
+      "href": "#"
+    }
+  ]
+}
