@@ -31,12 +31,15 @@
       <nav id="primary-nav" class="primary-nav" aria-label="Primary">
         <a href="index.html">Home</a>
         <a href="menu.html">Menu</a>
+        <a href="index.html#past-orders">Past Orders</a>
         <a href="about.html">About</a>
         <a href="index.html#contact">Contact</a>
-        <a class="cta-link" href="cart.html">View Cart <span class="cart-count" aria-live="polite">0</span></a>
       </nav>
     </div>
   </header>
+  <a class="cart-bubble-floating" href="cart.html" aria-label="View cart">
+    View Cart <span class="cart-count" aria-live="polite">0</span>
+  </a>
 
   <main id="main">
     <!-- Menu hero -->
@@ -88,14 +91,23 @@
     <div class="modal-overlay" data-close="modal"></div>
     <div class="modal-content" role="document">
       <button class="modal-close" type="button" data-close="modal" aria-label="Close modal">✕</button>
-      <img loading="lazy" decoding="async" id="modal-image" src="" alt="" />
-      <div>
-        <h3 id="modal-title"></h3>
-        <p id="modal-price" class="price"></p>
-        <p id="modal-desc" class="subtle"></p>
-        <div class="modal-sizes" data-modal-sizes></div>
-        <button class="btn primary" type="button" data-modal-add>Add to Cart</button>
-        <a class="btn ghost" href="cart.html">View Cart</a>
+      <div class="modal-header">
+        <div>
+          <h3 id="modal-title"></h3>
+          <p id="modal-price" class="price"></p>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-media">
+          <img loading="lazy" decoding="async" id="modal-image" src="" alt="" />
+        </div>
+        <div class="modal-details">
+          <p id="modal-desc" class="subtle"></p>
+          <div class="modal-sizes" data-modal-sizes></div>
+          <div class="modal-actions">
+            <button class="btn primary" type="button" data-modal-add>Add to Cart</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

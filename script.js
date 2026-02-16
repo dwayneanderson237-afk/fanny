@@ -366,42 +366,25 @@ const loadContent = async () => {
 
 const renderHeroSlider = (content) => {
   const slider = document.querySelector('[data-hero-slider]');
-  const dotsWrap = document.querySelector('[data-hero-dots]');
   if (!slider) return;
 
-  const slides = content.heroSlides || [];
-  slider.innerHTML = slides
-    .map(
-      (slide, index) => `
-      <div class="hero-slide${index === 0 ? ' is-active' : ''}" data-hero-slide="${index}">
-        <div class="hero-media">
-          <img src="${slide.image}" alt="${slide.title}" loading="eager" decoding="async" />
-        </div>
-        <div class="hero-content reveal">
-          <p class="eyebrow">Signature Snacks</p>
-          <h1>${slide.title}</h1>
-          <p>${slide.subtitle}</p>
-          <div class="hero-actions">
-            <a class="btn primary" href="menu.html">View Menu</a>
-            <a class="btn ghost" href="cart.html">View Cart</a>
-          </div>
+  const slide = (content.heroSlides || [])[0];
+  if (!slide) return;
+
+  slider.innerHTML = `
+    <div class="hero-slide is-active" style="background-image: url('${slide.image}')">
+      <div class="hero-content reveal">
+        <p class="eyebrow">Signature Snacks</p>
+        <h1>${slide.title}</h1>
+        <p>${slide.subtitle}</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="menu.html">View Menu</a>
+          <a class="btn ghost" href="cart.html">View Cart</a>
         </div>
       </div>
-    `
-    )
-    .join('');
+    </div>
+  `;
 
-  if (dotsWrap) {
-    dotsWrap.innerHTML = slides
-      .map(
-        (_, index) =>
-          `<button class="hero-dot${index === 0 ? ' is-active' : ''}" data-hero-dot="${index}" aria-label="Go to slide ${index + 1}"></button>`
-      )
-      .join('');
-  }
-
-  initHeroSlider(slides.length);
-  updateHeroImageFit();
   observeReveals();
 };
 
@@ -499,6 +482,20 @@ const renderCombos = (content) => {
     wrap.innerHTML = cards;
   });
   observeReveals();
+};
+
+const renderGallery = (content) => {
+  const galleryWrap = document.querySelector('[data-past-orders]');
+  if (!galleryWrap) return;
+  const tracks = galleryWrap.querySelectorAll('[data-gallery-track]');
+  if (!tracks.length) return;
+  const items = content.pastOrders || [];
+  const markup = items
+    .map((item) => `<img src="${item.image}" alt="${item.title || 'Past order'}" loading="lazy" decoding="async" />`)
+    .join('');
+  tracks.forEach((track) => {
+    track.innerHTML = markup;
+  });
 };
 
 const renderTestimonials = (content) => {
@@ -610,6 +607,7 @@ const renderSite = (content) => {
   renderProducts(content);
   renderPromos(content);
   renderCombos(content);
+  renderGallery(content);
   renderTestimonials(content);
   renderAbout(content);
   const menuTitle = document.querySelector('[data-menu-title]');
@@ -692,6 +690,7 @@ const setupProductModal = () => {
   const modalDesc = modal.querySelector('#modal-desc');
   const modalSizes = modal.querySelector('[data-modal-sizes]');
   const modalAddBtn = modal.querySelector('[data-modal-add]');
+  const modalCloseBtn = modal.querySelector('.modal-close');
   let modalProduct = null;
   let selectedSize = null;
   let lastFocusedElement = null;
@@ -713,23 +712,40 @@ const setupProductModal = () => {
     selectedSize = product.sizes?.[0]?.size || null;
     if (modalSizes) {
       modalSizes.innerHTML = '';
-      const chips = document.createElement('div');
-      chips.className = 'size-chips';
-      chips.innerHTML = (product.sizes || [])
+
+      const chipsWrap = document.createElement('div');
+      chipsWrap.className = 'size-chips';
+      chipsWrap.innerHTML = (product.sizes || [])
         .map((size, index) => {
           const countLabel = size.count ? ` (${size.count} pcs)` : '';
-          return `<button class="size-chip${index === 0 ? ' is-active' : ''}" type="button" data-size="${size.size}" title="${size.size} • ${formatCurrency(size.price)}${countLabel}">${size.size}</button>`;
+          return `<button class="size-chip${index === 0 ? ' is-active' : ''}" type="button" data-size="${size.size}" title="${size.size}${countLabel}">${size.size}</button>`;
         })
         .join('');
-      modalSizes.appendChild(chips);
+
+      const selectWrap = document.createElement('div');
+      selectWrap.className = 'size-select';
+      selectWrap.innerHTML = `
+        <label class="size-label" for="modal-size">Choose size</label>
+        <select id="modal-size" class="glass-select">
+          ${(product.sizes || [])
+            .map((size) => {
+              const countLabel = size.count ? ` (${size.count} pcs)` : '';
+              return `<option value="${size.size}">${size.size}${countLabel}</option>`;
+            })
+            .join('')}
+        </select>
+      `;
+
+      modalSizes.appendChild(chipsWrap);
+      modalSizes.appendChild(selectWrap);
 
       const setActiveChip = (value) => {
-        chips.querySelectorAll('.size-chip').forEach((chip) => {
+        chipsWrap.querySelectorAll('.size-chip').forEach((chip) => {
           chip.classList.toggle('is-active', chip.dataset.size === value);
         });
       };
 
-      chips.addEventListener('click', (event) => {
+      chipsWrap.addEventListener('click', (event) => {
         const chip = event.target.closest('.size-chip');
         if (!chip) return;
         const selected = product.sizes?.find((entry) => entry.size === chip.dataset.size);
@@ -737,8 +753,22 @@ const setupProductModal = () => {
           selectedSize = selected.size;
           modalPrice.textContent = formatCurrency(selected.price);
           setActiveChip(selected.size);
+          const select = selectWrap.querySelector('#modal-size');
+          if (select) select.value = selected.size;
         }
       });
+
+      const select = selectWrap.querySelector('#modal-size');
+      if (select) {
+        select.addEventListener('change', () => {
+          const selected = product.sizes?.find((entry) => entry.size === select.value);
+          if (selected) {
+            selectedSize = selected.size;
+            modalPrice.textContent = formatCurrency(selected.price);
+            setActiveChip(selected.size);
+          }
+        });
+      }
     }
 
     modal.classList.add('is-open');
@@ -783,6 +813,12 @@ const setupProductModal = () => {
       closeModal();
     }
   });
+
+  if (modalCloseBtn) {
+    modalCloseBtn.addEventListener('click', () => {
+      closeModal();
+    });
+  }
 
   if (modalAddBtn) {
     modalAddBtn.addEventListener('click', () => {
@@ -908,16 +944,34 @@ if (cartList) {
 
 // Admin panel (server-backed)
 const adminLogin = document.querySelector('[data-admin-login]');
-const adminEditor = document.querySelector('[data-admin-editor]');
+const adminRoot = document.querySelector('.admin-content');
+const adminEditor = null;
 const adminSaveBtn = document.querySelector('[data-admin-save]');
 const adminResetBtn = document.querySelector('[data-admin-reset]');
 const adminLogout = document.querySelector('[data-admin-logout]');
+const adminNavLinks = document.querySelectorAll('[data-admin-nav]');
+const adminViews = document.querySelectorAll('[data-admin-view]');
+const adminMenuToggle = document.querySelector('[data-admin-menu-toggle]');
+const adminMenuOverlay = document.querySelector('[data-admin-menu-overlay]');
+const adminLists = {
+  products: document.querySelector('[data-admin-list="products"]'),
+  slides: document.querySelector('[data-admin-list="slides"]'),
+  gallery: document.querySelector('[data-admin-list="gallery"]'),
+  combos: document.querySelector('[data-admin-list="combos"]'),
+  promos: document.querySelector('[data-admin-list="promos"]'),
+  testimonials: document.querySelector('[data-admin-list="testimonials"]'),
+};
+const adminModal = document.querySelector('.admin-modal');
+const adminModalBody = document.querySelector('[data-admin-modal-body]');
+const adminModalSave = document.querySelector('[data-admin-modal-save]');
+const adminModalDelete = document.querySelector('[data-admin-modal-delete]');
 
 const adminState = {
   content: null,
   dashboard: null,
   orders: [],
   inventory: [],
+  modal: { type: null, index: null, isNew: false, draft: null },
 };
 
 const orderRows = document.querySelector('[data-order-rows]');
@@ -947,6 +1001,376 @@ const orderStatusLabels = [
   { value: 'prep', label: 'In Prep' },
   { value: 'delivered', label: 'Delivered' },
 ];
+
+const getAdminCollection = (type) => {
+  if (!adminState.content) return [];
+  if (type === 'slides') return adminState.content.heroSlides || [];
+  if (type === 'gallery') return adminState.content.pastOrders || [];
+  if (type === 'products') return adminState.content.products || [];
+  if (type === 'combos') return adminState.content.combos || [];
+  if (type === 'promos') return adminState.content.promos || [];
+  if (type === 'testimonials') return adminState.content.testimonials || [];
+  return [];
+};
+
+const setAdminCollection = (type, items) => {
+  if (!adminState.content) return;
+  if (type === 'slides') adminState.content.heroSlides = items;
+  if (type === 'gallery') adminState.content.pastOrders = items;
+  if (type === 'products') adminState.content.products = items;
+  if (type === 'combos') adminState.content.combos = items;
+  if (type === 'promos') adminState.content.promos = items;
+  if (type === 'testimonials') adminState.content.testimonials = items;
+};
+
+const renderAdminLists = () => {
+  if (!adminRoot || !adminState.content) return;
+  const placeholder =
+    'data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"400\"><rect width=\"100%\" height=\"100%\" fill=\"%23f7efe8\"/><text x=\"50%\" y=\"50%\" font-size=\"20\" font-family=\"Arial\" fill=\"%23976b5a\" text-anchor=\"middle\" dominant-baseline=\"middle\">Preview</text></svg>';
+
+  if (adminLists.products) {
+    const items = adminState.content.products || [];
+    adminLists.products.innerHTML = items
+      .map(
+        (product, index) => `
+        <article class="admin-item-card" data-admin-item data-type="products" data-index="${index}">
+          <img src="${product.image || placeholder}" alt="${product.name}" loading="lazy" decoding="async" />
+          <div class="admin-item-meta">
+            <h4>${product.name}</h4>
+            <p>${product.featured ? 'Featured' : 'Standard'} • ${formatCurrency(product.sizes?.[0]?.price ?? 0)}</p>
+          </div>
+        </article>
+      `
+      )
+      .join('');
+  }
+
+  if (adminLists.slides) {
+    const items = adminState.content.heroSlides || [];
+    adminLists.slides.innerHTML = items
+      .map(
+        (slide, index) => `
+        <article class="admin-item-card" data-admin-item data-type="slides" data-index="${index}">
+          <img src="${slide.image || placeholder}" alt="${slide.title}" loading="lazy" decoding="async" />
+          <div class="admin-item-meta">
+            <h4>${slide.title}</h4>
+            <p>${slide.subtitle}</p>
+          </div>
+        </article>
+      `
+      )
+      .join('');
+  }
+
+  if (adminLists.gallery) {
+    const items = adminState.content.pastOrders || [];
+    adminLists.gallery.innerHTML = items
+      .map(
+        (entry, index) => `
+        <article class="admin-item-card" data-admin-item data-type="gallery" data-index="${index}">
+          <img src="${entry.image || placeholder}" alt="${entry.title || 'Past order'}" loading="lazy" decoding="async" />
+          <div class="admin-item-meta">
+            <h4>${entry.title || 'Past order'}</h4>
+            <p>Gallery image</p>
+          </div>
+        </article>
+      `
+      )
+      .join('');
+  }
+
+  if (adminLists.combos) {
+    const items = adminState.content.combos || [];
+    adminLists.combos.innerHTML = items
+      .map(
+        (combo, index) => `
+        <article class="admin-item-card" data-admin-item data-type="combos" data-index="${index}">
+          <div class="admin-item-meta">
+            <h4>${combo.name}</h4>
+            <p>${combo.items.join(', ')}</p>
+            <p>${formatCurrency(combo.price)}</p>
+          </div>
+        </article>
+      `
+      )
+      .join('');
+  }
+
+  if (adminLists.promos) {
+    const items = adminState.content.promos || [];
+    adminLists.promos.innerHTML = items
+      .map(
+        (promo, index) => `
+        <article class="admin-item-card" data-admin-item data-type="promos" data-index="${index}">
+          <div class="admin-item-meta">
+            <h4>${promo.title}</h4>
+            <p>${promo.description}</p>
+          </div>
+        </article>
+      `
+      )
+      .join('');
+  }
+
+  if (adminLists.testimonials) {
+    const items = adminState.content.testimonials || [];
+    adminLists.testimonials.innerHTML = items
+      .map(
+        (testimonial, index) => `
+        <article class="admin-item-card" data-admin-item data-type="testimonials" data-index="${index}">
+          <div class="admin-item-meta">
+            <h4>${testimonial.name}</h4>
+            <p>${testimonial.quote}</p>
+          </div>
+        </article>
+      `
+      )
+      .join('');
+  }
+};
+
+const setActiveAdminView = (view) => {
+  adminViews.forEach((panel) => {
+    panel.classList.toggle('is-active', panel.dataset.adminView === view);
+  });
+  adminNavLinks.forEach((link) => {
+    link.classList.toggle('is-active', link.dataset.adminNav === view);
+  });
+};
+
+const openAdminModal = (type, index = null, draft = null) => {
+  if (!adminModal || !adminModalBody) return;
+  const items = getAdminCollection(type);
+  const item = draft || (index !== null ? items[index] : null);
+  if (!item) return;
+  adminState.modal = { type, index, isNew: Boolean(draft), draft };
+
+  const placeholderImage =
+    'data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"800\" height=\"500\"><rect width=\"100%\" height=\"100%\" fill=\"%23f7efe8\"/><text x=\"50%\" y=\"50%\" font-size=\"22\" font-family=\"Arial\" fill=\"%23976b5a\" text-anchor=\"middle\" dominant-baseline=\"middle\">Image preview</text></svg>';
+  const previewSrc = item.image || placeholderImage;
+  const preview = `<img src="${previewSrc}" alt="Preview" loading="lazy" decoding="async" data-admin-preview />`;
+
+  if (type === 'slides') {
+    adminModalBody.innerHTML = `
+      ${preview}
+      <label class="admin-field">Title
+        <input type="text" data-modal-field="title" value="${item.title || ''}" />
+      </label>
+      <label class="admin-field">Subtitle
+        <input type="text" data-modal-field="subtitle" value="${item.subtitle || ''}" />
+      </label>
+      <label class="admin-field">Image URL
+        <input type="url" data-modal-field="image" value="${item.image || ''}" />
+      </label>
+      <div class="admin-upload">
+        <label class="btn ghost">
+          Upload Image
+          <input type="file" accept="image/*" data-upload-input hidden />
+        </label>
+        <span class="admin-upload-status" data-upload-status></span>
+      </div>
+    `;
+  }
+
+  if (type === 'gallery') {
+    adminModalBody.innerHTML = `
+      ${preview}
+      <label class="admin-field">Title
+        <input type="text" data-modal-field="title" value="${item.title || ''}" />
+      </label>
+      <label class="admin-field">Image URL
+        <input type="url" data-modal-field="image" value="${item.image || ''}" />
+      </label>
+      <div class="admin-upload">
+        <label class="btn ghost">
+          Upload Image
+          <input type="file" accept="image/*" data-upload-input hidden />
+        </label>
+        <span class="admin-upload-status" data-upload-status></span>
+      </div>
+    `;
+  }
+
+  if (type === 'products') {
+    const sizeMap = (item.sizes || []).reduce((acc, size) => {
+      acc[size.size] = size;
+      return acc;
+    }, {});
+    adminModalBody.innerHTML = `
+      ${preview}
+      <label class="admin-field">Product ID
+        <input type="text" data-modal-field="id" value="${item.id || ''}" />
+      </label>
+      <label class="admin-field">Name
+        <input type="text" data-modal-field="name" value="${item.name || ''}" />
+      </label>
+      <label class="admin-field">Image URL
+        <input type="url" data-modal-field="image" value="${item.image || ''}" />
+      </label>
+      <div class="admin-upload">
+        <label class="btn ghost">
+          Upload Image
+          <input type="file" accept="image/*" data-upload-input hidden />
+        </label>
+        <span class="admin-upload-status" data-upload-status></span>
+      </div>
+      <label class="admin-field">Description
+        <textarea rows="3" data-modal-field="desc">${item.desc || ''}</textarea>
+      </label>
+      <div class="admin-field-group">
+        <strong>Tray Sizes</strong>
+        ${['Small', 'Medium', 'Large']
+          .map((label) => {
+            const size = sizeMap[label] || { price: 0, count: '' };
+            return `
+              <div class="admin-grid">
+                <label class="admin-field">${label} Price
+                  <input type="number" step="0.01" data-size="${label}" data-modal-field="price" value="${size.price}" />
+                </label>
+                <label class="admin-field">${label} Count
+                  <input type="number" data-size="${label}" data-modal-field="count" value="${size.count ?? ''}" />
+                </label>
+              </div>
+            `;
+          })
+          .join('')}
+      </div>
+      <label class="admin-field">
+        <input type="checkbox" data-modal-field="featured" ${item.featured ? 'checked' : ''} />
+        Featured
+      </label>
+      <label class="admin-field">
+        <input type="checkbox" data-modal-field="recommended" ${item.recommended ? 'checked' : ''} />
+        Recommended
+      </label>
+    `;
+  }
+
+  if (type === 'combos') {
+    adminModalBody.innerHTML = `
+      <label class="admin-field">Combo Name
+        <input type="text" data-modal-field="name" value="${item.name || ''}" />
+      </label>
+      <label class="admin-field">Price
+        <input type="number" step="0.01" data-modal-field="price" value="${item.price || 0}" />
+      </label>
+      <label class="admin-field">Items (one per line)
+        <textarea rows="4" data-modal-field="items">${(item.items || []).join('\\n')}</textarea>
+      </label>
+    `;
+  }
+
+  if (type === 'promos') {
+    adminModalBody.innerHTML = `
+      <label class="admin-field">Title
+        <input type="text" data-modal-field="title" value="${item.title || ''}" />
+      </label>
+      <label class="admin-field">Description
+        <textarea rows="3" data-modal-field="description">${item.description || ''}</textarea>
+      </label>
+    `;
+  }
+
+  if (type === 'testimonials') {
+    adminModalBody.innerHTML = `
+      <label class="admin-field">Name
+        <input type="text" data-modal-field="name" value="${item.name || ''}" />
+      </label>
+      <label class="admin-field">Quote
+        <textarea rows="3" data-modal-field="quote">${item.quote || ''}</textarea>
+      </label>
+    `;
+  }
+
+  adminModal.classList.add('is-open');
+  adminModal.setAttribute('aria-hidden', 'false');
+  body.classList.add('modal-open');
+};
+
+const closeAdminModal = () => {
+  if (!adminModal) return;
+  adminModal.classList.remove('is-open');
+  adminModal.setAttribute('aria-hidden', 'true');
+  body.classList.remove('modal-open');
+};
+
+const saveAdminModal = () => {
+  const { type, index, isNew, draft } = adminState.modal;
+  if (!type) return;
+  const updated = { ...(draft || (index !== null ? getAdminCollection(type)[index] : {})) };
+  if (type === 'slides') {
+    updated.title = adminModalBody.querySelector('[data-modal-field=\"title\"]').value.trim();
+    updated.subtitle = adminModalBody.querySelector('[data-modal-field=\"subtitle\"]').value.trim();
+    updated.image = adminModalBody.querySelector('[data-modal-field=\"image\"]').value.trim();
+  }
+  if (type === 'gallery') {
+    updated.title = adminModalBody.querySelector('[data-modal-field=\"title\"]').value.trim();
+    updated.image = adminModalBody.querySelector('[data-modal-field=\"image\"]').value.trim();
+  }
+  if (type === 'products') {
+    updated.id = adminModalBody.querySelector('[data-modal-field=\"id\"]').value.trim();
+    updated.name = adminModalBody.querySelector('[data-modal-field=\"name\"]').value.trim();
+    updated.image = adminModalBody.querySelector('[data-modal-field=\"image\"]').value.trim();
+    updated.desc = adminModalBody.querySelector('[data-modal-field=\"desc\"]').value.trim();
+    updated.featured = Boolean(adminModalBody.querySelector('[data-modal-field=\"featured\"]').checked);
+    updated.recommended = Boolean(adminModalBody.querySelector('[data-modal-field=\"recommended\"]').checked);
+    updated.sizes = ['Small', 'Medium', 'Large'].map((label) => {
+      const price = parseNumber(
+        adminModalBody.querySelector(`[data-modal-field=\"price\"][data-size=\"${label}\"]`).value
+      );
+      const countValue = adminModalBody.querySelector(
+        `[data-modal-field=\"count\"][data-size=\"${label}\"]`
+      ).value;
+      const count = countValue === '' ? null : Number(countValue);
+      return { size: label, price, count };
+    });
+  }
+  if (type === 'combos') {
+    updated.name = adminModalBody.querySelector('[data-modal-field=\"name\"]').value.trim();
+    updated.price = parseNumber(adminModalBody.querySelector('[data-modal-field=\"price\"]').value);
+    updated.items = adminModalBody
+      .querySelector('[data-modal-field=\"items\"]').value.split('\\n')
+      .map((line) => line.trim())
+      .filter(Boolean);
+  }
+  if (type === 'promos') {
+    updated.title = adminModalBody.querySelector('[data-modal-field=\"title\"]').value.trim();
+    updated.description = adminModalBody.querySelector('[data-modal-field=\"description\"]').value.trim();
+  }
+  if (type === 'testimonials') {
+    updated.name = adminModalBody.querySelector('[data-modal-field=\"name\"]').value.trim();
+    updated.quote = adminModalBody.querySelector('[data-modal-field=\"quote\"]').value.trim();
+  }
+
+  const items = [...getAdminCollection(type)];
+  if (isNew) {
+    items.push(updated);
+  } else if (index !== null) {
+    items[index] = updated;
+  }
+  setAdminCollection(type, items);
+  contentState.data = adminState.content;
+  renderAdminLists();
+  updateQuickStats();
+  closeAdminModal();
+};
+
+const deleteAdminModalItem = () => {
+  const { type, index, isNew } = adminState.modal;
+  if (!type || isNew) {
+    closeAdminModal();
+    return;
+  }
+  const items = [...getAdminCollection(type)];
+  if (index !== null) {
+    items.splice(index, 1);
+    setAdminCollection(type, items);
+    contentState.data = adminState.content;
+    renderAdminLists();
+    updateQuickStats();
+  }
+  closeAdminModal();
+};
 
 const getTodayISO = () => {
   const now = new Date();
@@ -1546,280 +1970,43 @@ const renderAdminEditor = (content) => {
   `;
 };
 
-const collectAdminContent = () => {
-  if (!adminEditor) return null;
+const collectAdminContent = () => adminState.content;
 
-  const slides = Array.from(adminEditor.querySelectorAll('[data-admin-slide]')).map((card) => ({
-    title: card.querySelector('[data-field="title"]').value.trim(),
-    subtitle: card.querySelector('[data-field="subtitle"]').value.trim(),
-    image: card.querySelector('[data-field="image"]').value.trim(),
-  }));
-
-  const products = Array.from(adminEditor.querySelectorAll('[data-admin-product]')).map((card) => {
-    const id = card.querySelector('[data-field="id"]').value.trim();
-    const name = card.querySelector('[data-field="name"]').value.trim();
-    const desc = card.querySelector('[data-field="desc"]').value.trim();
-    const image = card.querySelector('[data-field="image"]').value.trim();
-    const featured = card.querySelector('[data-field="featured"]').checked;
-    const recommended = card.querySelector('[data-field="recommended"]').checked;
-    const sizes = ['Small', 'Medium', 'Large'].map((label) => {
-      const priceInput = card.querySelector(`[data-size="${label}"][data-field="price"]`);
-      const countInput = card.querySelector(`[data-size="${label}"][data-field="count"]`);
-      return {
-        size: label,
-        price: parseNumber(priceInput?.value),
-        count: countInput?.value ? parseNumber(countInput.value) : null,
-      };
-    });
-    return { id, name, desc, image, featured, recommended, sizes };
-  });
-
-  const combos = Array.from(adminEditor.querySelectorAll('[data-admin-combo]')).map((card) => ({
-    name: card.querySelector('[data-field="name"]').value.trim(),
-    price: parseNumber(card.querySelector('[data-field="price"]').value),
-    items: card
-      .querySelector('[data-field="items"]')
-      .value.split('\n')
-      .map((item) => item.trim())
-      .filter(Boolean),
-  }));
-
-  const promos = Array.from(adminEditor.querySelectorAll('[data-admin-promo]')).map((card) => ({
-    title: card.querySelector('[data-field="title"]').value.trim(),
-    description: card.querySelector('[data-field="description"]').value.trim(),
-  }));
-
-  const testimonials = Array.from(adminEditor.querySelectorAll('[data-admin-testimonial]')).map(
-    (card) => ({
-      quote: card.querySelector('[data-field="quote"]').value.trim(),
-      name: card.querySelector('[data-field="name"]').value.trim(),
-    })
-  );
-
-  const aboutTitle = adminEditor.querySelector('[data-about-field="title"]').value.trim();
-  const aboutParagraphs = adminEditor
-    .querySelector('[data-about-field="paragraphs"]')
-    .value.split('\n')
-    .map((text) => text.trim())
-    .filter(Boolean);
-
-  const menuTitle = adminEditor.querySelector('[data-menu-field="title"]').value.trim();
-  const menuSubtitle = adminEditor.querySelector('[data-menu-field="subtitle"]').value.trim();
-  const siteName = adminEditor.querySelector('[data-site-field="name"]').value.trim();
-  const siteDescription = adminEditor
-    .querySelector('[data-site-field="description"]')
-    .value.trim();
-
-  const contact = {
-    address: adminEditor.querySelector('[data-contact-field="address"]').value.trim(),
-    phone: adminEditor.querySelector('[data-contact-field="phone"]').value.trim(),
-    map: adminEditor.querySelector('[data-contact-field="map"]').value.trim(),
-    whatsapp: adminEditor.querySelector('[data-contact-field="whatsapp"]').value.trim(),
-    hours: Array.from(adminEditor.querySelectorAll('[data-admin-hour]')).map((card) => ({
-      label: card.querySelector('[data-field="label"]').value.trim(),
-      value: card.querySelector('[data-field="value"]').value.trim(),
-    })),
-  };
-
-  const socials = Array.from(adminEditor.querySelectorAll('[data-admin-social]')).map((card) => ({
-    label: card.querySelector('[data-field="label"]').value.trim(),
-    href: card.querySelector('[data-field="href"]').value.trim(),
-  }));
-
-  return {
-    ...contentState.data,
-    site: {
-      ...(contentState.data.site || {}),
-      name: siteName,
-      description: siteDescription,
-    },
-    heroSlides: slides,
-    products,
-    combos,
-    promos,
-    testimonials,
-    about: { title: aboutTitle, paragraphs: aboutParagraphs },
-    menu: { title: menuTitle, subtitle: menuSubtitle },
-    contact,
-    socials,
-  };
+const getDefaultItem = (type) => {
+  if (type === 'slides') {
+    return { title: 'New slide', subtitle: 'Short subtitle', image: '' };
+  }
+  if (type === 'gallery') {
+    return { title: 'Past order', image: '' };
+  }
+  if (type === 'products') {
+    return {
+      id: `new-product-${Date.now()}`,
+      name: 'New Product',
+      desc: '',
+      image: '',
+      featured: false,
+      recommended: false,
+      sizes: [
+        { size: 'Small', price: 0, count: null },
+        { size: 'Medium', price: 0, count: null },
+        { size: 'Large', price: 0, count: null },
+      ],
+    };
+  }
+  if (type === 'combos') {
+    return { name: 'New Combo', items: [], price: 0 };
+  }
+  if (type === 'promos') {
+    return { title: 'New Promo', description: '' };
+  }
+  if (type === 'testimonials') {
+    return { name: 'Customer Name', quote: '' };
+  }
+  return {};
 };
 
-const addAdminCard = (type) => {
-  if (!adminEditor) return;
-  const list = adminEditor.querySelector(`[data-admin-list="${type}s"]`) ||
-    adminEditor.querySelector(`[data-admin-list="${type}"]`);
-  if (!list) return;
-
-  let cardHtml = '';
-  if (type === 'slide') {
-    cardHtml = `
-      <div class="admin-card" data-admin-slide>
-        <div class="admin-grid">
-          <label class="admin-field">Title
-            <input type="text" data-field="title" value="New slide title" />
-          </label>
-          <label class="admin-field">Subtitle
-            <input type="text" data-field="subtitle" value="Short subtitle" />
-          </label>
-          <label class="admin-field">Image URL
-            <input type="url" data-field="image" value="" />
-          </label>
-        </div>
-        <div class="admin-upload">
-          <label class="btn ghost">
-            Upload Image
-            <input type="file" accept="image/*" data-upload-input hidden />
-          </label>
-          <span class="admin-upload-status" data-upload-status></span>
-        </div>
-        <div class="admin-inline">
-          <button class="btn ghost" type="button" data-admin-remove="slide">Remove Slide</button>
-        </div>
-      </div>
-    `;
-  }
-  if (type === 'combo') {
-    cardHtml = `
-      <div class="admin-card" data-admin-combo>
-        <div class="admin-grid">
-          <label class="admin-field">Combo Name
-            <input type="text" data-field="name" value="New Combo" />
-          </label>
-          <label class="admin-field">Price
-            <input type="number" step="0.01" data-field="price" value="0" />
-          </label>
-        </div>
-        <label class="admin-field">Items (one per line)
-          <textarea rows="3" data-field="items"></textarea>
-        </label>
-        <div class="admin-inline">
-          <button class="btn ghost" type="button" data-admin-remove="combo">Remove Combo</button>
-        </div>
-      </div>
-    `;
-  }
-  if (type === 'promo') {
-    cardHtml = `
-      <div class="admin-card" data-admin-promo>
-        <label class="admin-field">Title
-          <input type="text" data-field="title" value="New Promo" />
-        </label>
-        <label class="admin-field">Description
-          <textarea rows="2" data-field="description"></textarea>
-        </label>
-        <div class="admin-inline">
-          <button class="btn ghost" type="button" data-admin-remove="promo">Remove Promo</button>
-        </div>
-      </div>
-    `;
-  }
-  if (type === 'testimonial') {
-    cardHtml = `
-      <div class="admin-card" data-admin-testimonial>
-        <label class="admin-field">Quote
-          <textarea rows="2" data-field="quote"></textarea>
-        </label>
-        <label class="admin-field">Name
-          <input type="text" data-field="name" value="" />
-        </label>
-        <div class="admin-inline">
-          <button class="btn ghost" type="button" data-admin-remove="testimonial">Remove Testimonial</button>
-        </div>
-      </div>
-    `;
-  }
-  if (type === 'social') {
-    cardHtml = `
-      <div class="admin-card" data-admin-social>
-        <label class="admin-field">Label
-          <input type="text" data-field="label" value="" />
-        </label>
-        <label class="admin-field">URL
-          <input type="url" data-field="href" value="" />
-        </label>
-        <div class="admin-inline">
-          <button class="btn ghost" type="button" data-admin-remove="social">Remove Social</button>
-        </div>
-      </div>
-    `;
-  }
-  if (type === 'hour') {
-    cardHtml = `
-      <div class="admin-card" data-admin-hour>
-        <div class="admin-grid">
-          <label class="admin-field">Label
-            <input type="text" data-field="label" value="" />
-          </label>
-          <label class="admin-field">Hours
-            <input type="text" data-field="value" value="" />
-          </label>
-        </div>
-        <div class="admin-inline">
-          <button class="btn ghost" type="button" data-admin-remove="hour">Remove Row</button>
-        </div>
-      </div>
-    `;
-  }
-  if (type === 'product') {
-    cardHtml = `
-      <div class="admin-card" data-admin-product data-product-id="new-product" data-featured="false" data-recommended="false">
-        <div class="admin-grid">
-          <label class="admin-field">Product ID
-            <input type="text" data-field="id" value="new-product" />
-          </label>
-          <label class="admin-field">Name
-            <input type="text" data-field="name" value="New Product" />
-          </label>
-          <label class="admin-field">Image URL
-            <input type="url" data-field="image" value="" />
-          </label>
-        </div>
-        <div class="admin-upload">
-          <label class="btn ghost">
-            Upload Image
-            <input type="file" accept="image/*" data-upload-input hidden />
-          </label>
-          <span class="admin-upload-status" data-upload-status></span>
-        </div>
-        <label class="admin-field">Description
-          <textarea rows="3" data-field="desc"></textarea>
-        </label>
-        <div class="admin-grid">
-          ${['Small', 'Medium', 'Large']
-            .map(
-              (sizeLabel) => `
-              <label class="admin-field">${sizeLabel} Price
-                <input type="number" step="0.01" data-size="${sizeLabel}" data-field="price" value="0" />
-              </label>
-              <label class="admin-field">${sizeLabel} Count
-                <input type="number" data-size="${sizeLabel}" data-field="count" value="" />
-              </label>
-            `
-            )
-            .join('')}
-        </div>
-        <div class="admin-inline">
-          <label class="admin-field">
-            <input type="checkbox" data-field="featured" />
-            Featured
-          </label>
-          <label class="admin-field">
-            <input type="checkbox" data-field="recommended" />
-            Recommended
-          </label>
-          <button class="btn ghost" type="button" data-admin-remove="product">Remove Product</button>
-        </div>
-      </div>
-    `;
-  }
-
-  if (cardHtml) {
-    list.insertAdjacentHTML('beforeend', cardHtml);
-  }
-};
-
-const uploadAdminImage = async (file, statusEl, targetInput) => {
+const uploadAdminImage = async (file, statusEl, targetInput, previewEl) => {
   if (!file || !targetInput) return;
   if (statusEl) statusEl.textContent = 'Uploading...';
   const formData = new FormData();
@@ -1835,6 +2022,7 @@ const uploadAdminImage = async (file, statusEl, targetInput) => {
       return;
     }
     targetInput.value = data.url;
+    if (previewEl) previewEl.src = data.url;
     if (statusEl) statusEl.textContent = 'Uploaded!';
   } catch {
     if (statusEl) statusEl.textContent = 'Upload failed.';
@@ -1842,7 +2030,7 @@ const uploadAdminImage = async (file, statusEl, targetInput) => {
 };
 
 const setupAdmin = async () => {
-  if (!adminEditor || !adminLogin) return;
+  if (!adminLogin || !adminRoot) return;
   const loginForm = adminLogin.querySelector('form');
   const loginError = adminLogin.querySelector('[data-login-error]');
 
@@ -1853,10 +2041,10 @@ const setupAdmin = async () => {
     if (contentResponse.ok && contentResponse.data) {
       adminState.content = contentResponse.data;
       contentState.data = contentResponse.data;
-      renderAdminEditor(contentResponse.data);
-      applyProductFilter();
+      renderAdminLists();
       updateQuickStats();
       loadAdminDashboard();
+      setActiveAdminView('dashboard');
     }
   } else {
     setAdminLocked(true);
@@ -1889,10 +2077,10 @@ const setupAdmin = async () => {
         if (contentResponse.ok && contentResponse.data) {
           adminState.content = contentResponse.data;
           contentState.data = contentResponse.data;
-          renderAdminEditor(contentResponse.data);
-          applyProductFilter();
+          renderAdminLists();
           updateQuickStats();
           loadAdminDashboard();
+          setActiveAdminView('dashboard');
         }
       } else if (loginError) {
         loginError.textContent =
@@ -1911,50 +2099,95 @@ const setupAdmin = async () => {
     });
   }
 
-  if (adminEditor) {
-    adminEditor.addEventListener('click', (event) => {
-      const addButton = event.target.closest('[data-admin-add]');
-      if (addButton) {
-        addAdminCard(addButton.dataset.adminAdd);
-        return;
-      }
-      const removeButton = event.target.closest('[data-admin-remove]');
-      if (removeButton) {
-        const card = removeButton.closest('.admin-card');
-        if (card) card.remove();
+  const setAdminMenuOpen = (open) => {
+    document.body.classList.toggle('admin-menu-open', open);
+  };
+
+  if (adminMenuToggle) {
+    adminMenuToggle.addEventListener('click', () => {
+      setAdminMenuOpen(!document.body.classList.contains('admin-menu-open'));
+    });
+  }
+
+  if (adminMenuOverlay) {
+    adminMenuOverlay.addEventListener('click', () => setAdminMenuOpen(false));
+  }
+
+  adminNavLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      setActiveAdminView(link.dataset.adminNav);
+      setAdminMenuOpen(false);
+    });
+  });
+
+  adminRoot.addEventListener('click', (event) => {
+    const addButton = event.target.closest('[data-admin-add]');
+    if (addButton) {
+      const typeMap = {
+        product: 'products',
+        slide: 'slides',
+        gallery: 'gallery',
+        combo: 'combos',
+        promo: 'promos',
+        testimonial: 'testimonials',
+      };
+      const type = typeMap[addButton.dataset.adminAdd] || addButton.dataset.adminAdd;
+      const draft = getDefaultItem(type);
+      openAdminModal(type, null, draft);
+      return;
+    }
+
+    const itemCard = event.target.closest('[data-admin-item]');
+    if (itemCard) {
+      openAdminModal(itemCard.dataset.type, Number(itemCard.dataset.index));
+      return;
+    }
+  });
+
+  if (adminModal) {
+    adminModal.addEventListener('click', (event) => {
+      if (event.target.dataset.close === 'admin-modal') {
+        closeAdminModal();
       }
     });
+  }
 
-    adminEditor.addEventListener('change', (event) => {
+  if (adminModalSave) {
+    adminModalSave.addEventListener('click', () => {
+      saveAdminModal();
+    });
+  }
+
+  if (adminModalDelete) {
+    adminModalDelete.addEventListener('click', () => {
+      deleteAdminModalItem();
+    });
+  }
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && adminModal?.classList.contains('is-open')) {
+      closeAdminModal();
+    }
+  });
+
+  if (adminModalBody) {
+    adminModalBody.addEventListener('change', (event) => {
       const uploadInput = event.target.closest('[data-upload-input]');
-      if (!uploadInput) return;
-      const file = uploadInput.files?.[0];
-      if (!file) return;
-      const card = uploadInput.closest('.admin-card');
-      const targetInput = card?.querySelector('[data-field="image"]');
-      const statusEl = card?.querySelector('[data-upload-status]');
-      uploadAdminImage(file, statusEl, targetInput);
-      uploadInput.value = '';
-    });
-
-    adminEditor.addEventListener('change', (event) => {
-      const filterToggle = event.target.closest('[data-admin-filter="featured"]');
-      if (filterToggle) {
-        applyProductFilter();
+      if (uploadInput) {
+        const file = uploadInput.files?.[0];
+        if (!file) return;
+        const targetInput = adminModalBody.querySelector('[data-modal-field="image"]');
+        const statusEl = adminModalBody.querySelector('[data-upload-status]');
+        const previewEl = adminModalBody.querySelector('[data-admin-preview]');
+        uploadAdminImage(file, statusEl, targetInput, previewEl);
+        uploadInput.value = '';
         return;
       }
-      const featuredToggle = event.target.closest('[data-field="featured"]');
-      const recommendedToggle = event.target.closest('[data-field="recommended"]');
-      if (featuredToggle || recommendedToggle) {
-        const card = event.target.closest('[data-admin-product]');
-        if (!card) return;
-        card.dataset.featured = String(
-          card.querySelector('[data-field="featured"]')?.checked || false
-        );
-        card.dataset.recommended = String(
-          card.querySelector('[data-field="recommended"]')?.checked || false
-        );
-        applyProductFilter();
+
+      const imageInput = event.target.closest('[data-modal-field="image"]');
+      if (imageInput) {
+        const previewEl = adminModalBody.querySelector('[data-admin-preview]');
+        if (previewEl) previewEl.src = imageInput.value || previewEl.src;
       }
     });
   }
@@ -1994,7 +2227,7 @@ const setupAdmin = async () => {
         contentState.productsById = Object.fromEntries(
           DEFAULT_CONTENT.products.map((product) => [product.id, product])
         );
-        renderAdminEditor(DEFAULT_CONTENT);
+        renderAdminLists();
         announce('Content reset.');
         updateQuickStats();
       }
@@ -2043,24 +2276,15 @@ const setupAdmin = async () => {
     button.addEventListener('click', () => {
       const action = button.dataset.adminAction;
       if (action === 'featured') {
-        scrollToAdminSection('products');
-        const filter = adminEditor?.querySelector('[data-admin-filter="featured"]');
-        if (filter) {
-          filter.checked = true;
-          applyProductFilter();
-        }
+        setActiveAdminView('products');
         return;
       }
       if (action === 'promos') {
-        scrollToAdminSection('promos');
+        setActiveAdminView('promos');
         return;
       }
       if (action === 'inventory') {
-        const section = document.querySelector('[data-admin-section="dashboard"]');
-        if (section) {
-          section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          flashSection(section);
-        }
+        setActiveAdminView('dashboard');
       }
     });
   });

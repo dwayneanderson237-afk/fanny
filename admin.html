@@ -20,19 +20,22 @@
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-  <!-- Sticky navigation -->
-  <header class="site-header">
-    <div class="container nav-wrap">
-      <a class="logo" data-site-name href="index.html">Fanny's Bites</a>
-      <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav">
-        <span class="nav-toggle-line"></span>
-        <span class="sr-only">Toggle navigation</span>
-      </button>
-      <nav id="primary-nav" class="primary-nav" aria-label="Primary">
-        <a href="admin.html">Dashboard</a>
-        <a href="index.html">Back to Site</a>
+
+  <!-- Admin top bar -->
+  <header class="admin-topbar">
+    <div class="container admin-topbar-inner">
+      <div class="admin-brand">
+        <button class="admin-menu-toggle" type="button" data-admin-menu-toggle aria-label="Open admin menu">
+          ☰
+        </button>
+        <a class="logo" data-site-name href="index.html">Fanny's Bites</a>
+      </div>
+      <div class="admin-topbar-actions">
+        <button class="btn primary" type="button" data-admin-save>Save Changes</button>
+        <button class="btn ghost" type="button" data-admin-reset>Reset Defaults</button>
+        <a class="btn ghost" href="index.html">View Site</a>
         <button class="btn ghost admin-logout" type="button" data-admin-logout>Log out</button>
-      </nav>
+      </div>
     </div>
   </header>
 
@@ -52,88 +55,76 @@
         <p class="admin-login-error" data-login-error aria-live="polite"></p>
         <button class="btn primary" type="submit">Sign In</button>
       </form>
-      <p class="subtle">Admin access requires the server. Run <strong>npm run dev</strong> and visit <strong>http://localhost:5173/admin.html</strong>. Default: <strong>admin / bites123</strong>.</p>
+      <p class="subtle">Admin access requires the server. Run <strong>npm run dev</strong> and visit <strong>http://localhost:5173/admin.html</strong>.</p>
     </div>
   </div>
 
-  <main id="main">
-    <section class="section">
-      <div class="container">
-        <div class="admin-hero reveal">
-          <p class="eyebrow">Admin Dashboard</p>
-          <h1 class="page-title">Daily overview</h1>
-          <span class="float-icon small" style="--x: 86%; --y: 12%;" data-speed="0.12">
-            <img loading="lazy" decoding="async" src="https://openmoji.org/data/color/svg/1F4CA.svg" alt="" aria-hidden="true" />
-          </span>
-          <p class="subtle">Track orders, inventory, and customer notes at a glance.</p>
-          <div class="footer-links" style="margin-top: 1rem;">
-            <a class="btn ghost" href="#">Add New Product</a>
-            <a class="btn ghost" href="#">Update Specials</a>
-            <a class="btn ghost" href="#">Export Orders</a>
-          </div>
-        </div>
-      </div>
-    </section>
+  <main id="main" class="admin-shell">
+    <div class="admin-mobile-overlay" data-admin-menu-overlay></div>
+    <aside class="admin-sidebar">
+      <nav aria-label="Admin navigation">
+        <button class="admin-nav-link is-active" type="button" data-admin-nav="dashboard">Dashboard</button>
+        <button class="admin-nav-link" type="button" data-admin-nav="orders">Orders</button>
+        <button class="admin-nav-link" type="button" data-admin-nav="products">Products</button>
+        <button class="admin-nav-link" type="button" data-admin-nav="slides">Hero Slides</button>
+        <button class="admin-nav-link" type="button" data-admin-nav="gallery">Past Orders</button>
+        <button class="admin-nav-link" type="button" data-admin-nav="combos">Combos</button>
+        <button class="admin-nav-link" type="button" data-admin-nav="promos">Promos</button>
+        <button class="admin-nav-link" type="button" data-admin-nav="testimonials">Testimonials</button>
+      </nav>
+    </aside>
 
-    <section class="section">
-      <div class="container">
+    <section class="admin-content">
+      <div class="admin-view is-active" data-admin-view="dashboard">
+        <header class="admin-view-header">
+          <p class="eyebrow">Dashboard</p>
+          <h1 class="page-title">Overview & alerts</h1>
+        </header>
         <div class="dashboard-grid" data-admin-section="dashboard">
-          <div class="stat-card reveal" data-stat-card="orders">
+          <div class="stat-card" data-stat-card="orders">
             <p class="eyebrow">Today's Orders</p>
             <h3 data-stat-value="orders">0</h3>
             <p class="subtle" data-stat-note="orders">Loading...</p>
           </div>
-          <div class="stat-card reveal" data-stat-card="revenue">
+          <div class="stat-card" data-stat-card="revenue">
             <p class="eyebrow">Revenue</p>
             <h3 data-stat-value="revenue">$0</h3>
             <p class="subtle" data-stat-note="revenue">Loading...</p>
           </div>
-          <div class="stat-card reveal" data-stat-card="inventory">
+          <div class="stat-card" data-stat-card="inventory">
             <p class="eyebrow">Inventory Alerts</p>
             <h3 data-stat-value="inventory">0 Items</h3>
             <ul class="admin-inventory" data-stat-inventory></ul>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <header class="section-header reveal">
-          <span class="badge">Performance</span>
-          <h2>Weekly best sellers</h2>
-        </header>
-        <div class="chart reveal">
-          <div class="chart-row">
-            <p class="subtle">Chin Chin Crunch</p>
-            <div class="chart-bar" style="width: 92%;"></div>
+        <div class="dashboard-grid">
+          <div class="stat-card">
+            <p class="eyebrow">Featured Items</p>
+            <h3 data-quick-stat="featured">0 Active</h3>
+            <p class="subtle">Update featured products quickly.</p>
+            <button class="btn ghost" type="button" data-admin-action="featured">Edit Featured</button>
           </div>
-          <div class="chart-row">
-            <p class="subtle">Akara Beans</p>
-            <div class="chart-bar" style="width: 78%;"></div>
+          <div class="stat-card">
+            <p class="eyebrow">Specials</p>
+            <h3 data-quick-stat="promos">0 Offers</h3>
+            <p class="subtle">Keep promos fresh each week.</p>
+            <button class="btn ghost" type="button" data-admin-action="promos">Update Specials</button>
           </div>
-          <div class="chart-row">
-            <p class="subtle">Fish Roll</p>
-            <div class="chart-bar" style="width: 64%;"></div>
-          </div>
-          <div class="chart-row">
-            <p class="subtle">Scotch Eggs</p>
-            <div class="chart-bar" style="width: 52%;"></div>
+          <div class="stat-card">
+            <p class="eyebrow">Inventory</p>
+            <h3 data-quick-stat="inventory">0 Low Stock</h3>
+            <p class="subtle">Review ingredients at a glance.</p>
+            <button class="btn ghost" type="button" data-admin-action="inventory">Review Inventory</button>
           </div>
         </div>
       </div>
-    </section>
 
-    <section class="section">
-      <div class="container">
-        <header class="section-header reveal">
-          <span class="badge">Live Orders</span>
-          <h2>In-progress orders</h2>
+      <div class="admin-view" data-admin-view="orders">
+        <header class="admin-view-header">
+          <p class="eyebrow">Orders</p>
+          <h2>Manage customer orders</h2>
         </header>
-        <div class="admin-filters reveal" data-order-filters>
-          <span class="float-icon small" style="--x: 86%; --y: 12%;" data-speed="0.12">
-            <img loading="lazy" decoding="async" src="https://openmoji.org/data/color/svg/1F4CB.svg" alt="" aria-hidden="true" />
-          </span>
+        <div class="admin-filters" data-order-filters>
           <input type="search" placeholder="Search by customer or order #" aria-label="Search orders" data-order-search />
           <select aria-label="Filter by status" data-order-status>
             <option value="">All statuses</option>
@@ -144,120 +135,106 @@
           <input type="date" aria-label="Filter by date" data-order-date />
           <button class="btn ghost" type="button" data-order-add>Add Order</button>
         </div>
-        <div class="admin-table-wrap reveal">
+        <div class="admin-table-wrap">
           <table class="admin-table">
-          <thead>
-            <tr>
-              <th>Order</th>
-              <th>Customer</th>
-              <th>Items</th>
-              <th>Pickup</th>
-              <th>Date</th>
-              <th>Status</th>
-              <th>Total</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody data-order-rows></tbody>
+            <thead>
+              <tr>
+                <th>Order</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Pickup</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody data-order-rows></tbody>
           </table>
         </div>
         <p class="subtle" data-order-empty hidden>No orders match these filters yet.</p>
-
-        <span class="float-icon float-fall" style="--x: 90%; --y: 18%;" data-speed="0.16">
-          <img loading="lazy" decoding="async" src="https://openmoji.org/data/color/svg/1F69A.svg" alt="" aria-hidden="true" />
-        </span>
       </div>
-    </section>
 
-    <section class="section">
-      <div class="container">
-        <header class="section-header reveal">
-          <span class="badge">Site Content</span>
-          <h2>Content manager</h2>
-          <p>Edit hero slides, products, combos, promos, testimonials, and contact details.</p>
+      <div class="admin-view" data-admin-view="products">
+        <header class="admin-view-header">
+          <p class="eyebrow">Products</p>
+          <h2>Click a product to edit</h2>
         </header>
-        <div class="admin-editor" data-admin-editor></div>
-        <div class="admin-actions">
-          <button class="btn primary" type="button" data-admin-save>Save Changes</button>
-          <button class="btn ghost" type="button" data-admin-reset>Reset Defaults</button>
+        <div class="admin-toolbar">
+          <button class="btn ghost" type="button" data-admin-add="product">Add Product</button>
         </div>
+        <div class="admin-grid-list" data-admin-list="products"></div>
       </div>
-    </section>
 
-    <section class="section">
-      <div class="container">
-        <header class="section-header reveal">
-          <span class="badge">Menu Control</span>
-          <h2>Quick edits</h2>
+      <div class="admin-view" data-admin-view="slides">
+        <header class="admin-view-header">
+          <p class="eyebrow">Hero Slides</p>
+          <h2>Click a slide to edit</h2>
         </header>
-        <div class="dashboard-grid">
-          <div class="stat-card reveal">
-            <p class="eyebrow">Featured Items</p>
-            <h3 data-quick-stat="featured">0 Active</h3>
-            <p class="subtle">Rotate snack bundles every Friday.</p>
-            <button class="btn ghost" type="button" data-admin-action="featured">Edit Featured</button>
-          </div>
-          <div class="stat-card reveal">
-            <p class="eyebrow">Specials</p>
-            <h3 data-quick-stat="promos">0 Offers</h3>
-            <p class="subtle">Next swap: Monday, 7:00 AM</p>
-            <button class="btn ghost" type="button" data-admin-action="promos">Update Specials</button>
-          </div>
-          <div class="stat-card reveal">
-            <p class="eyebrow">Inventory</p>
-            <h3 data-quick-stat="inventory">0 Low Stock</h3>
-            <p class="subtle">Review ingredients at a glance.</p>
-            <button class="btn ghost" type="button" data-admin-action="inventory">Review Inventory</button>
-          </div>
+        <div class="admin-toolbar">
+          <button class="btn ghost" type="button" data-admin-add="slide">Add Slide</button>
         </div>
+        <div class="admin-grid-list" data-admin-list="slides"></div>
+      </div>
+
+      <div class="admin-view" data-admin-view="gallery">
+        <header class="admin-view-header">
+          <p class="eyebrow">Past Orders</p>
+          <h2>Click an image to edit</h2>
+        </header>
+        <div class="admin-toolbar">
+          <button class="btn ghost" type="button" data-admin-add="gallery">Add Image</button>
+        </div>
+        <div class="admin-grid-list" data-admin-list="gallery"></div>
+      </div>
+
+      <div class="admin-view" data-admin-view="combos">
+        <header class="admin-view-header">
+          <p class="eyebrow">Combos</p>
+          <h2>Click a combo to edit</h2>
+        </header>
+        <div class="admin-toolbar">
+          <button class="btn ghost" type="button" data-admin-add="combo">Add Combo</button>
+        </div>
+        <div class="admin-grid-list" data-admin-list="combos"></div>
+      </div>
+
+      <div class="admin-view" data-admin-view="promos">
+        <header class="admin-view-header">
+          <p class="eyebrow">Promos</p>
+          <h2>Click a promo to edit</h2>
+        </header>
+        <div class="admin-toolbar">
+          <button class="btn ghost" type="button" data-admin-add="promo">Add Promo</button>
+        </div>
+        <div class="admin-grid-list" data-admin-list="promos"></div>
+      </div>
+
+      <div class="admin-view" data-admin-view="testimonials">
+        <header class="admin-view-header">
+          <p class="eyebrow">Testimonials</p>
+          <h2>Click a testimonial to edit</h2>
+        </header>
+        <div class="admin-toolbar">
+          <button class="btn ghost" type="button" data-admin-add="testimonial">Add Testimonial</button>
+        </div>
+        <div class="admin-grid-list" data-admin-list="testimonials"></div>
       </div>
     </section>
   </main>
 
-  <!-- Footer / Contact -->
-  <footer class="site-footer" id="contact">
-    <div class="container footer-grid">
-      <div>
-        <h3 data-site-name>Fanny's Bites</h3>
-        <p data-site-description>Chin chin, akara beans, fish rolls, and egg rolls made fresh every morning.</p>
-        <p><strong>Address:</strong> <span data-contact-address>145 Lemon Lane, Suite B, Sunnyvale</span></p>
-        <p><strong>Map:</strong> <span data-contact-map>maps.google.com/?q=145+Lemon+Lane+Sunnyvale</span></p>
-      </div>
-      <div>
-        <h3>Hours</h3>
-        <div data-contact-hours>
-          <p>Mon - Fri: 7:00 AM - 7:00 PM</p>
-          <p>Sat: 8:00 AM - 6:00 PM</p>
-          <p>Sun: 8:00 AM - 3:00 PM</p>
-        </div>
-      </div>
-      <div>
-        <h3>Connect</h3>
-        <div class="footer-links" data-social-links>
-          <a href="#">Instagram</a>
-          <a href="#">Facebook</a>
-          <a href="#">TikTok</a>
-        </div>
-        <p><strong>Phone:</strong> <span data-contact-phone>(123) 456-7890</span></p>
-        <a class="btn ghost" data-contact-whatsapp href="#">WhatsApp Us</a>
-      </div>
-      <div>
-        <h3>Say Hello</h3>
-        <form class="footer-form">
-          <label class="sr-only" for="contact-name">Name</label>
-          <input id="contact-name" type="text" placeholder="Your name" />
-          <label class="sr-only" for="contact-email">Email</label>
-          <input id="contact-email" type="email" placeholder="Email address" />
-          <label class="sr-only" for="contact-message">Message</label>
-          <textarea id="contact-message" placeholder="How can we help?"></textarea>
-          <button class="btn primary" type="submit">Send Message</button>
-        </form>
+  <!-- Admin editor modal -->
+  <div class="modal admin-modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-overlay" data-close="admin-modal"></div>
+    <div class="modal-content" role="document">
+      <button class="modal-close" type="button" data-close="admin-modal" aria-label="Close modal">✕</button>
+      <div class="admin-modal-body" data-admin-modal-body></div>
+      <div class="admin-modal-actions">
+        <button class="btn primary" type="button" data-admin-modal-save>Save</button>
+        <button class="btn ghost" type="button" data-admin-modal-delete>Delete</button>
       </div>
     </div>
-    <div class="footer-bottom">
-      <p>Join our newsletter for sweet updates and special offers.</p>
-    </div>
-  </footer>
+  </div>
 
   <script src="script.js" defer></script>
 </body>

@@ -31,19 +31,21 @@
       <nav id="primary-nav" class="primary-nav" aria-label="Primary">
         <a href="index.html">Home</a>
         <a href="menu.html">Menu</a>
+        <a href="#past-orders">Past Orders</a>
         <a href="about.html">About</a>
         <a href="#contact">Contact</a>
-        <a class="cta-link" href="cart.html">View Cart <span class="cart-count" aria-live="polite">0</span></a>
       </nav>
     </div>
   </header>
+  <a class="cart-bubble-floating" href="cart.html" aria-label="View cart">
+    View Cart <span class="cart-count" aria-live="polite">0</span>
+  </a>
 
   <main id="main">
     <!-- Hero section -->
     <section class="hero section">
       <div class="container hero-shell">
         <div class="hero-slider" data-hero-slider></div>
-        <div class="hero-dots" data-hero-dots></div>
         <!-- Floating decorative icon -->
         <span class="float-icon icon-croissant" style="--x: 4%; --y: 8%;" data-speed="0.2">
           <img loading="lazy" decoding="async" src="https://openmoji.org/data/color/svg/1F950.svg" alt="" aria-hidden="true" />
@@ -91,6 +93,21 @@
       </div>
     </section>
 
+    <!-- Past orders gallery -->
+    <section class="section" id="past-orders">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="badge">Past Orders</span>
+          <h2>Fresh trays we’ve crafted</h2>
+          <p>A moving showcase of customer favorites and celebration trays.</p>
+        </header>
+      </div>
+      <div class="gallery-marquee" aria-hidden="true" data-past-orders>
+        <div class="gallery-track" data-gallery-track></div>
+        <div class="gallery-track" aria-hidden="true" data-gallery-track></div>
+      </div>
+    </section>
+
     <!-- Testimonials -->
     <section class="section">
       <div class="container">
@@ -117,14 +134,23 @@
     <div class="modal-overlay" data-close="modal"></div>
     <div class="modal-content" role="document">
       <button class="modal-close" type="button" data-close="modal" aria-label="Close modal">✕</button>
-      <img loading="lazy" decoding="async" id="modal-image" src="" alt="" />
-      <div>
-        <h3 id="modal-title"></h3>
-        <p id="modal-price" class="price"></p>
-        <p id="modal-desc" class="subtle"></p>
-        <div class="modal-sizes" data-modal-sizes></div>
-        <button class="btn primary" type="button" data-modal-add>Add to Cart</button>
-        <a class="btn ghost" href="cart.html">View Cart</a>
+      <div class="modal-header">
+        <div>
+          <h3 id="modal-title"></h3>
+          <p id="modal-price" class="price"></p>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-media">
+          <img loading="lazy" decoding="async" id="modal-image" src="" alt="" />
+        </div>
+        <div class="modal-details">
+          <p id="modal-desc" class="subtle"></p>
+          <div class="modal-sizes" data-modal-sizes></div>
+          <div class="modal-actions">
+            <button class="btn primary" type="button" data-modal-add>Add to Cart</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

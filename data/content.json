@@ -6,19 +6,39 @@
   },
   "heroSlides": [
     {
-      "title": "Signature snacks made fresh.",
-      "subtitle": "Crunchy, golden, and ready to share.",
-      "image": "/uploads/1771092206718-17136311.png"
-    },
-    {
-      "title": "Tray sizes for every celebration.",
-      "subtitle": "Small, medium, and large trays for any crowd.",
-      "image": "/uploads/1771093698307-466855490.png"
-    },
-    {
       "title": "Order your favorites today.",
       "subtitle": "Fish rolls, egg rolls, meat pies, and more.",
-      "image": "/uploads/1771092172871-57601966.png"
+      "image": "/uploads/1771271911075-127563882.jpeg"
+    }
+  ],
+  "pastOrders": [
+    {
+      "title": "Weekend celebration tray",
+      "image": "/uploads/1771271532287-677986163.jpeg"
+    },
+    {
+      "title": "Golden pastries assortment",
+      "image": "/uploads/1771271558413-848935031.jpeg"
+    },
+    {
+      "title": "Party snack spread",
+      "image": "/uploads/1771271583292-956763794.jpeg"
+    },
+    {
+      "title": "Tray of favorites",
+      "image": "/uploads/1771271608376-770877470.jpeg"
+    },
+    {
+      "title": "Sweet bite platter",
+      "image": "/uploads/1771271666169-804744897.jpeg"
+    },
+    {
+      "title": "Celebration Treats",
+      "image": "/uploads/1771271630048-440736682.jpeg"
+    },
+    {
+      "title": "Family tray order",
+      "image": "/uploads/1771271693307-738110066.jpeg"
     }
   ],
   "menu": {
@@ -30,7 +50,7 @@
       "id": "chin-chin",
       "name": "Chin Chin",
       "desc": "Crunchy bite-size dough, lightly spiced and fried to golden perfection.",
-      "image": "/uploads/1771093706148-146893184.png",
+      "image": "/uploads/1771271721971-957267228.jpeg",
       "featured": true,
       "recommended": true,
       "sizes": [
@@ -55,7 +75,7 @@
       "id": "fish-roll",
       "name": "Fish Roll",
       "desc": "Flaky pastry roll filled with seasoned fish.",
-      "image": "/uploads/1771093769727-359400041.png",
+      "image": "/uploads/1771271740371-482246899.jpeg",
       "featured": true,
       "recommended": true,
       "sizes": [
@@ -80,7 +100,7 @@
       "id": "egg-roll",
       "name": "Egg Roll",
       "desc": "Soft, sweet dough wrapped around a seasoned egg center.",
-      "image": "/uploads/1771093782245-942745392.png",
+      "image": "/uploads/1771271763102-571249737.jpeg",
       "featured": true,
       "recommended": true,
       "sizes": [
@@ -105,7 +125,7 @@
       "id": "akara",
       "name": "Akara Beans",
       "desc": "Whipped bean fritters with a soft center and crisp edges.",
-      "image": "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?auto=format&fit=crop&w=1200&q=80",
+      "image": "/uploads/1771271776356-66868659.jpeg",
       "featured": true,
       "recommended": true,
       "sizes": [
@@ -130,7 +150,7 @@
       "id": "puff-puff",
       "name": "Puff Puff Balls",
       "desc": "Soft, airy dough balls with a light golden crust.",
-      "image": "/uploads/1771092109317-14572036.png",
+      "image": "/uploads/1771271797700-400302398.jpeg",
       "featured": false,
       "recommended": false,
       "sizes": [
@@ -155,7 +175,7 @@
       "id": "doughnut",
       "name": "Doughnut Balls",
       "desc": "Pillowy doughnut bites finished with a light sugar dusting.",
-      "image": "https://images.unsplash.com/photo-1523986371872-9d3ba2e2f5f8?auto=format&fit=crop&w=1200&q=80",
+      "image": "/uploads/1771271816074-665938004.jpeg",
       "featured": false,
       "recommended": false,
       "sizes": [
@@ -180,7 +200,7 @@
       "id": "meat-pie",
       "name": "Meat Pie",
       "desc": "Flaky pastry filled with savory minced meat and spices.",
-      "image": "/uploads/1771092119955-178740769.png",
+      "image": "/uploads/1771271846974-927067534.jpeg",
       "featured": false,
       "recommended": false,
       "sizes": [
